@@ -1,0 +1,73 @@
+# Pre parcial práctico 2 — copiar peticiones a Postman.
+# No requiere una extensión del editor. Sustituir los IDs por los obtenidos en los GET.
+
+### Ya funciona: categorías
+GET http://localhost:3002/api/categories
+
+### Ya funciona: libros
+GET http://localhost:3002/api/books
+
+### Ya funciona: consulta por ID; sustituir el 1 por un ID existente
+GET http://localhost:3002/api/books/1
+
+### Después del bloque 1: creación válida (cambiar categoryId)
+POST http://localhost:3002/api/books
+Content-Type: application/json
+
+{
+  "title": "Learning NestJS",
+  "availableCopies": 3,
+  "categoryId": 1
+}
+
+### Después del bloque 1: registrar cero copias también es válido
+POST http://localhost:3002/api/books
+Content-Type: application/json
+
+{
+  "title": "No copies yet",
+  "availableCopies": 0,
+  "categoryId": 1
+}
+
+### Después del bloque 1: texto en vez de número debe devolver 400
+POST http://localhost:3002/api/books
+Content-Type: application/json
+
+{
+  "title": "Invalid example",
+  "availableCopies": "2",
+  "categoryId": 1
+}
+
+### Después del bloque 1: propiedad adicional debe devolver 400
+POST http://localhost:3002/api/books
+Content-Type: application/json
+
+{
+  "title": "Invalid example",
+  "availableCopies": 2,
+  "categoryId": 1,
+  "status": "active"
+}
+
+### Ya funciona (referencia, no es tarea): cambiar categoryId por un ID existente
+GET http://localhost:3002/api/books/search?categoryId=1&limit=1
+
+### Ya funciona (referencia, no es tarea): query inválida, 400
+GET http://localhost:3002/api/books/search?limit=abc
+
+### Ya funciona (referencia, no es tarea): categoría numérica inexistente, 200 y []
+GET http://localhost:3002/api/books/search?categoryId=999999999
+
+### Después del bloque 2: prestar; cambiar el ID por un libro con copias
+PATCH http://localhost:3002/api/books/1/borrow
+
+### Después del bloque 2: ID inválido, 400
+PATCH http://localhost:3002/api/books/abc/borrow
+
+### Después del bloque 2: libro inexistente, 404
+PATCH http://localhost:3002/api/books/999999999/borrow
+
+### Después del préstamo: consultar el mismo ID para comprobar el cambio
+GET http://localhost:3002/api/books/1
